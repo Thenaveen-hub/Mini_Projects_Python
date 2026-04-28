@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+__py*
+*.pyc
+
+# Virtual Environment
+venv/
+env/
+
+# Environment Variables
+.env
+.env*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+.db*
+
+# Uploads
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gemini Chatbot</title>
+
+<style>
+
+body {
+  background: #020617;
+  font-family: Arial;
+  color: white;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+#chatbox {
+  width: 420px;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+h3 {
+  text-align: center;
+}
+
+#messages {
+  height: 420px;
+  overflow-y: auto;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.user {
+  text-align: right;
+  color: #38bdf8;
+  margin: 6px;
+}
+
+.bot {
+  text-align: left;
+  color: #86efac;
+  margin: 6px;
+}
+
+#input-area {
+  display: flex;
+  gap: 6px;
+}
+
+input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+}
+
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #38bdf8;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0ea5e9;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div id="chatbox">
+
+  <h3>🤖  MY Assistant  </h3>
+
+  <div id="messages"></div>
+
+  <div id="input-area">
+
+    <input 
+      id="msg" 
+      placeholder="Type your message..." 
+      onkeydown="handleEnter(event)"
+    />
+
+    <button onclick="send()">Send</button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const API_URL = "http://127.0.0.1:8000/chat";
+
+const box = document.getElementById("messages");
+const input = document.getElementById("msg");
+
+
+function addMessage(text, type) {
+
+  const div = document.createElement("div");
+
+  div.className = type;
+
+  div.innerText = text;
+
+  box.appendChild(div);
+
+  box.scrollTop = box.scrollHeight;
+}
+
+
+async function send() {
+
+  const msg = input.value.trim();
+
+  if (!msg) return;
+
+  // Show user message
+  addMessage("You: " + msg, "user");
+
+  input.value = "";
+
+  try {
+
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: msg
+      })
+    });
+
+    const data = await res.json();
+
+    // Show bot reply
+    addMessage("Bot: " + data.reply, "bot");
+
+  }
+  catch (err) {
+
+    addMessage("Bot: Server error ❌", "bot");
+  }
+}
+
+
+// Enter key support
+function handleEnter(e) {
+
+  if (e.key === "Enter") {
+    send();
+  }
+}
+
+</script>
+
+</body>
+</html>
