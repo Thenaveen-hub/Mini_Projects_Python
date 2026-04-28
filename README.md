@@ -5,7 +5,7 @@ This repository contains multiple small FastAPI projects for learning backend de
 ## Projects Included
 
 1. `fastapi_TodoList`
-2. `fastapi_students`
+2. `fastapi_CRUD(students)`
 3. `fastapi_urlshort`
 4. `fastapi_chatbot`
 
